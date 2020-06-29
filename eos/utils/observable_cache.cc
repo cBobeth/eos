@@ -101,7 +101,7 @@ namespace eos
                 catch (eos::Exception & e)
                 {
                     Log::instance()->message("ObservableCache::update", ll_error)
-                        << "Exception encountered when evaluating observable '" << (*o)->name() << "': "
+                        << "Exception encountered when evaluating observable '" << (*o)->name() << "[" << (*o)->kinematics().as_string() << "];" << (*o)->options().as_string() << "': "
                         << e.what();
                     *p = std::numeric_limits<double>::quiet_NaN();
 
