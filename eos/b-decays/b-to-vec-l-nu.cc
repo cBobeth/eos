@@ -265,6 +265,8 @@ namespace eos
             // charged lepton velocity in the dilepton rest frame
             double v    = (1.0 - m_l * m_l / q2);
             double lam  = lambda(m_B * m_B, m_V * m_V, q2);
+            if (lam < 0.0)
+                return 0.0;
             double p    = std::sqrt(lam) / (2.0 * m_B);
             // universal electroweak correction, cf. [S1982]
             double etaEW = 1.0066;
@@ -291,6 +293,12 @@ namespace eos
             double aff0  = form_factors->a_0(q2);
             double aff1  = form_factors->a_1(q2);
             double aff2  = form_factors->a_2(q2);
+            // A_2 can become infinite due to kinem. singularity in helicity form factors (BGL1997)
+            // However, since A_2 is always multiplied by lambda, and the normalization carries another
+            // power of lambda, this is negligble. Set to zero in that case.
+            //if (! std::isfinite(aff2))
+            //    aff2 = 0.0;
+
             double vff   = form_factors->v(q2);
             double tff1  = form_factors->t_1(q2);
             double tff2  = form_factors->t_2(q2);
@@ -302,6 +310,7 @@ namespace eos
             double v        = (1.0 - m_l * m_l / q2);
             double m_l_hat  = std::sqrt(1.0 - v);
             double lam      = lambda(m_B * m_B, m_V * m_V, q2);
+            double sqrt_lam = (lam > 0.0) ? std::sqrt(lam) : 0.0;
 
             double sqrtq2 = std::sqrt(q2);
             double NF = norm(q2);
@@ -309,12 +318,12 @@ namespace eos
             // transversity amplitudes A's. cf. [DSD2014], p.17
             result.a_0          = (1.0 - gA) * (m_B + m_V) / (2.0 * m_V * sqrtq2) * ( (m_B * m_B - m_V * m_V - q2) * aff1 - lam * aff2 / power_of<2>(m_B + m_V) );
             result.a_0_T        = TL / (2.0 * m_V) * ( (m_B * m_B + 3.0 * m_V * m_V - q2) * tff2 - lam * tff3 / (m_B * m_B - m_V * m_V) );
-            result.a_plus       = ( (m_B + m_V) * aff1 * (1.0 - gA) - std::sqrt(lam) * vff * (1.0 + gV) / (m_B + m_V) );
-            result.a_minus      = ( (m_B + m_V) * aff1 * (1.0 - gA) + std::sqrt(lam) * vff * (1.0 + gV) / (m_B + m_V) );
-            result.a_plus_T     = TL * ( (m_B * m_B - m_V * m_V) * tff2 / sqrtq2 + std::sqrt(lam) * tff1 / sqrtq2 );
-            result.a_minus_T    = TL * ( (m_B * m_B - m_V * m_V) * tff2 / sqrtq2 - std::sqrt(lam) * tff1 / sqrtq2 );
-            result.a_t          =  std::sqrt(lam) * aff0 * (1.0 - gA) / sqrtq2;
-            result.a_P          =  std::sqrt(lam) * aff0 * gP / (mbatmu + mcatmu);
+            result.a_plus       = ( (m_B + m_V) * aff1 * (1.0 - gA) - sqrt_lam * vff * (1.0 + gV) / (m_B + m_V) );
+            result.a_minus      = ( (m_B + m_V) * aff1 * (1.0 - gA) + sqrt_lam * vff * (1.0 + gV) / (m_B + m_V) );
+            result.a_plus_T     = TL * ( (m_B * m_B - m_V * m_V) * tff2 / sqrtq2 + sqrt_lam * tff1 / sqrtq2 );
+            result.a_minus_T    = TL * ( (m_B * m_B - m_V * m_V) * tff2 / sqrtq2 - sqrt_lam * tff1 / sqrtq2 );
+            result.a_t          =  sqrt_lam * aff0 * (1.0 - gA) / sqrtq2;
+            result.a_P          =  sqrt_lam * aff0 * gP / (mbatmu + mcatmu);
             result.a_t_P        =  result.a_t + result.a_P / m_l_hat;
             result.a_para       =  (result.a_plus + result.a_minus) / std::sqrt(2.0);
             result.a_para_T     =  (result.a_plus_T + result.a_minus_T) / std::sqrt(2.0);
@@ -353,13 +362,19 @@ namespace eos
 
         double normalized_decay_width(const double & q2) const
         {
-            return this->differential_angular_observables(q2).normalized_decay_width();
+            const double result = this->differential_angular_observables(q2).normalized_decay_width();
+
+            if (! std::isfinite(result))
+                Log::instance()->message("[B->Vlnu::normalized_decay_width]", ll_error)
+                    << "not finite for q2 = " << q2;
+
+            return result;
         }
 
         double integrated_pdf_q2(const double & q2_min, const double & q2_max) const
         {
             const double q2_abs_min = power_of<2>(m_l());
-            const double q2_abs_max = power_of<2>(m_B() - m_V());
+            const double q2_abs_max = power_of<2>(m_B() - m_V() - 1.0e-3);
 
             std::function<double (const double &)> f = std::bind(&Implementation<BToVectorLeptonNeutrino>::normalized_decay_width, this, std::placeholders::_1);
             const double num   = integrate<GSL::QAGS>(f, q2_min,     q2_max);
