@@ -122,7 +122,7 @@ namespace eos
     BGL1997FormFactors<BToDstar>::g(const double & s) const
     {
         // resonances for 1^-
-        const double blaschke = _z(s, 6.329) * _z(s, 6.910) * _z(s, 7.020);
+        const double blaschke = _z(s, 6.329 * 6.329) * _z(s, 6.910 * 6.910) * _z(s, 7.020 * 7.020);
         const double phi      = _phi(s, _t_0, 96, 3, 3, 1, _chi_1m);
         const double z        = _z(s, _t_0);
         const double series   = _a_g[0] + _a_g[1] * z + _a_g[2] * z * z + _a_g[3] * z * z * z;
@@ -134,7 +134,7 @@ namespace eos
     BGL1997FormFactors<BToDstar>::f(const double & s) const
     {
         // resonances for 1^+
-        const double blaschke = _z(s, 6.739) * _z(s, 6.750) * _z(s, 7.145) * _z(s, 7.150);
+        const double blaschke = _z(s, 6.739 * 6.739) * _z(s, 6.750 * 6.750) * _z(s, 7.145 * 7.145) * _z(s, 7.150 * 7.150);
         const double phi      = _phi(s, _t_0, 24, 1, 1, 1, _chi_1p);
         const double z        = _z(s, _t_0);
         const double series   = _a_f[0] + _a_f[1] * z + _a_f[2] * z * z + _a_f[3] * z * z * z;
@@ -146,7 +146,7 @@ namespace eos
     BGL1997FormFactors<BToDstar>::F1(const double & s) const
     {
         // resonances for 1^+
-        const double blaschke = _z(s, 6.739) * _z(s, 6.750) * _z(s, 7.145) * _z(s, 7.150);
+        const double blaschke = _z(s, 6.739 * 6.739) * _z(s, 6.750 * 6.750) * _z(s, 7.145 * 7.145) * _z(s, 7.150 * 7.150);
         const double phi      = _phi(s, _t_0, 48, 1, 1, 2, _chi_1p);
         const double z        = _z(s, _t_0);
         const double series   = _a_F1[0] + _a_F1[1] * z + _a_F1[2] * z * z + _a_F1[3] * z * z * z;
@@ -158,7 +158,7 @@ namespace eos
     BGL1997FormFactors<BToDstar>::F2(const double & s) const
     {
         // resonances for 0^-
-        const double blaschke = _z(s, 6.275) * _z(s, 6.871) * _z(s, 7.250);
+        const double blaschke = _z(s, 6.275 * 6.275) * _z(s, 6.871 * 6.871) * _z(s, 7.250 * 7.250);
         const double phi      = _phi(s, _t_0, 64, 3, 3, 1, _chi_0m);
         const double z        = _z(s, _t_0);
         const double series   = _a_F2[0] + _a_F2[1] * z + _a_F2[2] * z * z + _a_F2[3] * z * z * z;
@@ -263,7 +263,7 @@ namespace eos
     BGL1997FormFactors<BToD>::f_p(const double & s) const
     {
         // resonances for 1^-
-        const double blaschke = _z(s, 6.329) * _z(s, 6.910) * _z(s, 7.020);
+        const double blaschke = _z(s, 6.329 * 6.329) * _z(s, 6.910 * 6.910) * _z(s, 7.020 * 7.020);
         const double phi      = _phi(s, _t_0, 48, 3, 3, 2, _chi_1m);
         const double z        = _z(s, _t_0);
         const double series   = _a_f_p[0] + _a_f_p[1] * z + _a_f_p[2] * z * z + _a_f_p[3] * z * z * z;
@@ -275,7 +275,7 @@ namespace eos
     BGL1997FormFactors<BToD>::f_0(const double & s) const
     {
         // resonances for 0^+
-        const double blaschke = _z(s, 6.704) * _z(s, 7.122);
+        const double blaschke = _z(s, 6.704 * 6.704) * _z(s, 7.122 * 7.122);
         const double phi      = _phi(s, _t_0, 16, 1, 1, 1, _chi_0p);
         const double z        = _z(s, _t_0);
         const double series   = _a_f_0[0] + _a_f_0[1] * z + _a_f_0[2] * z * z + _a_f_0[3] * z * z * z;
