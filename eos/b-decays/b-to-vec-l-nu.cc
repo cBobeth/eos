@@ -106,18 +106,18 @@ namespace eos
             {
             }
 
-            inline double vv10()    const  { return _vv[0]; }
-            inline double vv20()    const  { return _vv[1]; }
-            inline double vv30()    const  { return _vv[2]; }
-            inline double vv1T()    const  { return _vv[3]; }
-            inline double vv2T()    const  { return _vv[4]; }
-            inline double vv3T()    const  { return _vv[5]; }
-            inline double vv4T()    const  { return _vv[6]; }
-            inline double vv5T()    const  { return _vv[7]; }
-            inline double vv10T()   const  { return _vv[8]; }
-            inline double vv20T()   const  { return _vv[9]; }
-            inline double vv30T()   const  { return _vv[10];}
-            inline double vv40T()   const  { return _vv[11];}
+            inline double vv10()    const  { return _vv[0]; }  // J_1c in B->K* ll literature
+            inline double vv20()    const  { return _vv[1]; }  // J_2c
+            inline double vv30()    const  { return _vv[2]; }  // J_6c
+            inline double vv1T()    const  { return _vv[3]; }  // J_1s
+            inline double vv2T()    const  { return _vv[4]; }  // J_2s
+            inline double vv3T()    const  { return _vv[5]; }  // J_6s
+            inline double vv4T()    const  { return _vv[6]; }  // J_3
+            inline double vv5T()    const  { return _vv[7]; }  // J_9
+            inline double vv10T()   const  { return _vv[8]; }  // J_4
+            inline double vv20T()   const  { return _vv[9]; }  // J_5
+            inline double vv30T()   const  { return _vv[10];}  // J_7
+            inline double vv40T()   const  { return _vv[11];}  // J_8
 
             // longitudinal polarization amplitude
             inline double normalized_amplitude_polarization_L() const
@@ -147,7 +147,7 @@ namespace eos
             inline double ftilde_L() const
             {
                 // (1 - 3 Ftilde_L)  == 16/3 (S2s + S2c/2)
-                return (1.0 / 3.0 - 16.0 / 9.0 * (vv2T() + vv20() / 2.0) / (normalized_amplitude_polarization_L() + normalized_amplitude_polarization_T()));
+                return 1.0 / 3.0 - 16.0 / 9.0 * (vv2T() + vv20() / 2.0) / (normalized_amplitude_polarization_L() + normalized_amplitude_polarization_T());
             }
 
             // a_fb leptonic
@@ -523,6 +523,7 @@ namespace eos
     {
         return _imp->integrated_pdf_w(w_min, w_max);
     }
+
     double
     BToVectorLeptonNeutrino::integrated_a_fb_leptonic(const double & q2_min, const double & q2_max) const
     {
@@ -597,6 +598,90 @@ namespace eos
     {
         auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
         return o.a_t_3();
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_J1c(const double & q2_min, const double & q2_max) const
+    {
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        return 3.0 / 4.0 * o.vv10();
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_J1s(const double & q2_min, const double & q2_max) const
+    {
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        return 3.0 / 4.0 * o.vv1T();
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_J2c(const double & q2_min, const double & q2_max) const
+    {
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        return 3.0 / 4.0 * o.vv20();
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_J2s(const double & q2_min, const double & q2_max) const
+    {
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        return 3.0 / 4.0 * o.vv2T();
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_J3(const double & q2_min, const double & q2_max) const
+    {
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        return 3.0 / 4.0 * o.vv4T();
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_J4(const double & q2_min, const double & q2_max) const
+    {
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        return 3.0 / 4.0 * -o.vv10T();
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_J5(const double & q2_min, const double & q2_max) const
+    {
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        return 3.0 / 4.0 * o.vv20T();
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_J6c(const double & q2_min, const double & q2_max) const
+    {
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        return 3.0 / 4.0 * -o.vv30();
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_J6s(const double & q2_min, const double & q2_max) const
+    {
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        return 3.0 / 4.0 * -o.vv3T();
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_J7(const double & q2_min, const double & q2_max) const
+    {
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        return 3.0 / 4.0 * -o.vv30T();
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_J8(const double & q2_min, const double & q2_max) const
+    {
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        return 3.0 / 4.0 * o.vv40T();
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_J9(const double & q2_min, const double & q2_max) const
+    {
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        return 3.0 / 4.0 * -o.vv5T();
     }
 
     double
@@ -681,6 +766,338 @@ namespace eos
     {
         auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
         return 3.0 / 4.0 * -o.vv5T() / o.normalized_decay_width();
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_CPave_a_fb_leptonic(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return 3.0 / 4.0 * (o.vv3T() + o_c.vv3T() + o.vv30() / 2.0 + o_c.vv30() / 2.0) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_CPave_f_L(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return 3.0 / 4.0 * (o.vv10() + o_c.vv10() - o.vv20() / 3.0 - o_c.vv20() / 3.0) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_CPave_ftilde_L(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+           
+        return 1.0 / 3.0 - 3.0 / 4.0 * 16.0 / 9.0 * (o.vv2T() + o_c.vv2T() + o.vv20() / 2.0 + o_c.vv20() / 2.0) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    /*  CP-averaged normalized observables
+     *
+     *    S_i ~ (J_i + barJ_i) / (Gam_i + barGam_i)
+     */
+    double
+    BToVectorLeptonNeutrino::integrated_S1c(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return 3.0 / 4.0 * (o.vv10() + o_c.vv10()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_S1s(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return 3.0 / 4.0 * (o.vv1T() + o_c.vv1T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_S2c(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return 3.0 / 4.0 * (o.vv20() + o_c.vv20()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_S2s(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return 3.0 / 4.0 * (o.vv2T() + o_c.vv2T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_S3(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return 3.0 / 4.0 * (o.vv4T() + o_c.vv4T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_S4(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return -3.0 / 4.0 * (o.vv10T() + o_c.vv10T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_S5(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return 3.0 / 4.0 * (o.vv20T() + o_c.vv20T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_S6c(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return -3.0 / 4.0 * (o.vv30() + o_c.vv30()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_S6s(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return -3.0 / 4.0 * (o.vv3T() + o_c.vv3T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_S7(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+        
+        return -3.0 / 4.0 * (o.vv30T() + o_c.vv30T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_S8(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return 3.0 / 4.0 * (o.vv40T() + o_c.vv40T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_S9(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return -3.0 / 4.0 * (o.vv5T() + o_c.vv5T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    /*  CP-asymmetric normalized observables
+     *
+     *    A_i ~ (J_i - barJ_i) / (Gam_i + barGam_i)
+     */
+    double
+    BToVectorLeptonNeutrino::integrated_A1c(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return 3.0 / 4.0 * (o.vv10() - o_c.vv10()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_A1s(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return 3.0 / 4.0 * (o.vv1T() - o_c.vv1T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_A2c(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return 3.0 / 4.0 * (o.vv20() - o_c.vv20()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_A2s(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return 3.0 / 4.0 * (o.vv2T() - o_c.vv2T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_A3(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return 3.0 / 4.0 * (o.vv4T() - o_c.vv4T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_A4(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return -3.0 / 4.0 * (o.vv10T() - o_c.vv10T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_A5(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return 3.0 / 4.0 * (o.vv20T() - o_c.vv20T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_A6c(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return -3.0 / 4.0 * (o.vv30() - o_c.vv30()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_A6s(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return -3.0 / 4.0 * (o.vv3T() - o_c.vv3T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_A7(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+        
+        return -3.0 / 4.0 * (o.vv30T() - o_c.vv30T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_A8(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return 3.0 / 4.0 * (o.vv40T() - o_c.vv40T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_A9(const double & q2_min, const double & q2_max) const
+    {
+        Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return -3.0 / 4.0 * (o.vv5T() - o_c.vv5T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
     }
 
     //* cf. [DSD2014], eq. (6), p. 5 - normalized(|Vcb|=1)
