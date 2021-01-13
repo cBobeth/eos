@@ -408,87 +408,87 @@ namespace eos
     }
 
     double
-    BToVectorLeptonNeutrino::differential_J1c_normalized(const double & q2) const
+    BToVectorLeptonNeutrino::differential_J1c(const double & q2) const
     {
         auto   o = _imp->differential_angular_observables(q2);
-        return 3.0 / 4.0 * o.vv10() / o.normalized_decay_width();
+        return 3.0 / 4.0 * o.vv10();
     }
 
     double
-    BToVectorLeptonNeutrino::differential_J1s_normalized(const double & q2) const
+    BToVectorLeptonNeutrino::differential_J1s(const double & q2) const
     {
         auto   o = _imp->differential_angular_observables(q2);
-        return 3.0 / 4.0 * o.vv1T() / o.normalized_decay_width();
+        return 3.0 / 4.0 * o.vv1T();
     }
 
     double
-    BToVectorLeptonNeutrino::differential_J2c_normalized(const double & q2) const
+    BToVectorLeptonNeutrino::differential_J2c(const double & q2) const
     {
         auto   o = _imp->differential_angular_observables(q2);
-        return 3.0 / 4.0 * o.vv20() / o.normalized_decay_width();
+        return 3.0 / 4.0 * o.vv20();
     }
 
     double
-    BToVectorLeptonNeutrino::differential_J2s_normalized(const double & q2) const
+    BToVectorLeptonNeutrino::differential_J2s(const double & q2) const
     {
         auto   o = _imp->differential_angular_observables(q2);
-        return 3.0 / 4.0 * o.vv2T() / o.normalized_decay_width();
+        return 3.0 / 4.0 * o.vv2T();
     }
 
     double
-    BToVectorLeptonNeutrino::differential_J3_normalized(const double & q2) const
+    BToVectorLeptonNeutrino::differential_J3(const double & q2) const
     {
         auto   o = _imp->differential_angular_observables(q2);
-        return 3.0 / 4.0 * o.vv4T() / o.normalized_decay_width();
+        return 3.0 / 4.0 * o.vv4T();
     }
 
     double
-    BToVectorLeptonNeutrino::differential_J4_normalized(const double & q2) const
+    BToVectorLeptonNeutrino::differential_J4(const double & q2) const
     {
         auto   o = _imp->differential_angular_observables(q2);
-        return 3.0 / 4.0 * -o.vv10T() / o.normalized_decay_width();
+        return 3.0 / 4.0 * -o.vv10T();
     }
 
     double
-    BToVectorLeptonNeutrino::differential_J5_normalized(const double & q2) const
+    BToVectorLeptonNeutrino::differential_J5(const double & q2) const
     {
         auto   o = _imp->differential_angular_observables(q2);
-        return 3.0 / 4.0 * o.vv20T() / o.normalized_decay_width();
+        return 3.0 / 4.0 * o.vv20T();
     }
 
     double
-    BToVectorLeptonNeutrino::differential_J6c_normalized(const double & q2) const
+    BToVectorLeptonNeutrino::differential_J6c(const double & q2) const
     {
         auto   o = _imp->differential_angular_observables(q2);
-        return 3.0 / 4.0 * -o.vv30() / o.normalized_decay_width();
+        return 3.0 / 4.0 * -o.vv30();
     }
 
     double
-    BToVectorLeptonNeutrino::differential_J6s_normalized(const double & q2) const
+    BToVectorLeptonNeutrino::differential_J6s(const double & q2) const
     {
         auto   o = _imp->differential_angular_observables(q2);
-        return 3.0 / 4.0 * -o.vv3T() / o.normalized_decay_width();
+        return 3.0 / 4.0 * -o.vv3T();
     }
 
     double
-    BToVectorLeptonNeutrino::differential_J7_normalized(const double & q2) const
+    BToVectorLeptonNeutrino::differential_J7(const double & q2) const
     {
         auto   o = _imp->differential_angular_observables(q2);
-        return 3.0 / 4.0 * -o.vv30T() / o.normalized_decay_width();
+        return 3.0 / 4.0 * -o.vv30T();
     }
 
     double
-    BToVectorLeptonNeutrino::differential_J8_normalized(const double & q2) const
+    BToVectorLeptonNeutrino::differential_J8(const double & q2) const
     {
         auto   o = _imp->differential_angular_observables(q2);
-        return 3.0 / 4.0 * o.vv40T() / o.normalized_decay_width();
+        return 3.0 / 4.0 * o.vv40T();
     }
 
     double
-    BToVectorLeptonNeutrino::differential_J9_normalized(const double & q2) const
+    BToVectorLeptonNeutrino::differential_J9(const double & q2) const
     {
         auto   o = _imp->differential_angular_observables(q2);
-        return 3.0 / 4.0 * -o.vv5T() / o.normalized_decay_width();
+        return 3.0 / 4.0 * -o.vv5T();
     }
 
     /* q^2-integrated observables */
@@ -510,6 +510,18 @@ namespace eos
     BToVectorLeptonNeutrino::integrated_branching_ratio(const double & q2_min, const double & q2_max) const
     {
         return _imp->integrated_angular_observables(q2_min, q2_max).normalized_decay_width() * std::norm(_imp->model->ckm_cb()) * _imp->tau_B / _imp->hbar;
+    }
+
+    double
+    BToVectorLeptonNeutrino::integrated_CPave_branching_ratio(const double & q2_min, const double & q2_max) const
+    {
+       Save<bool> save(_imp->cp_conjugate, false);
+        
+        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
+        _imp->cp_conjugate = true;
+        auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
+
+        return (o.normalized_decay_width() + o_c.normalized_decay_width()) / 2.0 * std::norm(_imp->model->ckm_cb()) * _imp->tau_B / _imp->hbar;
     }
 
     double
@@ -682,90 +694,6 @@ namespace eos
     {
         auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
         return 3.0 / 4.0 * -o.vv5T();
-    }
-
-    double
-    BToVectorLeptonNeutrino::integrated_J1c_normalized(const double & q2_min, const double & q2_max) const
-    {
-        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
-        return 3.0 / 4.0 * o.vv10() / o.normalized_decay_width();
-    }
-
-    double
-    BToVectorLeptonNeutrino::integrated_J1s_normalized(const double & q2_min, const double & q2_max) const
-    {
-        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
-        return 3.0 / 4.0 * o.vv1T() / o.normalized_decay_width();
-    }
-
-    double
-    BToVectorLeptonNeutrino::integrated_J2c_normalized(const double & q2_min, const double & q2_max) const
-    {
-        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
-        return 3.0 / 4.0 * o.vv20() / o.normalized_decay_width();
-    }
-
-    double
-    BToVectorLeptonNeutrino::integrated_J2s_normalized(const double & q2_min, const double & q2_max) const
-    {
-        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
-        return 3.0 / 4.0 * o.vv2T() / o.normalized_decay_width();
-    }
-
-    double
-    BToVectorLeptonNeutrino::integrated_J3_normalized(const double & q2_min, const double & q2_max) const
-    {
-        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
-        return 3.0 / 4.0 * o.vv4T() / o.normalized_decay_width();
-    }
-
-    double
-    BToVectorLeptonNeutrino::integrated_J4_normalized(const double & q2_min, const double & q2_max) const
-    {
-        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
-        return 3.0 / 4.0 * -o.vv10T() / o.normalized_decay_width();
-    }
-
-    double
-    BToVectorLeptonNeutrino::integrated_J5_normalized(const double & q2_min, const double & q2_max) const
-    {
-        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
-        return 3.0 / 4.0 * o.vv20T() / o.normalized_decay_width();
-    }
-
-    double
-    BToVectorLeptonNeutrino::integrated_J6c_normalized(const double & q2_min, const double & q2_max) const
-    {
-        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
-        return 3.0 / 4.0 * -o.vv30() / o.normalized_decay_width();
-    }
-
-    double
-    BToVectorLeptonNeutrino::integrated_J6s_normalized(const double & q2_min, const double & q2_max) const
-    {
-        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
-        return 3.0 / 4.0 * -o.vv3T() / o.normalized_decay_width();
-    }
-
-    double
-    BToVectorLeptonNeutrino::integrated_J7_normalized(const double & q2_min, const double & q2_max) const
-    {
-        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
-        return 3.0 / 4.0 * -o.vv30T() / o.normalized_decay_width();
-    }
-
-    double
-    BToVectorLeptonNeutrino::integrated_J8_normalized(const double & q2_min, const double & q2_max) const
-    {
-        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
-        return 3.0 / 4.0 * o.vv40T() / o.normalized_decay_width();
-    }
-
-    double
-    BToVectorLeptonNeutrino::integrated_J9_normalized(const double & q2_min, const double & q2_max) const
-    {
-        auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
-        return 3.0 / 4.0 * -o.vv5T() / o.normalized_decay_width();
     }
 
     double
