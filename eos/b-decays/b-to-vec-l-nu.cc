@@ -479,7 +479,7 @@ namespace eos
     BToVectorLeptonNeutrino::differential_J4(const double & q2) const
     {
         auto   o = _imp->differential_angular_observables(q2);
-        return 3.0 / 4.0 * -o.vv10T();
+        return 3.0 / 4.0 * o.vv10T();
     }
 
     double
@@ -493,21 +493,21 @@ namespace eos
     BToVectorLeptonNeutrino::differential_J6c(const double & q2) const
     {
         auto   o = _imp->differential_angular_observables(q2);
-        return 3.0 / 4.0 * -o.vv30();
+        return 3.0 / 4.0 * o.vv30();
     }
 
     double
     BToVectorLeptonNeutrino::differential_J6s(const double & q2) const
     {
         auto   o = _imp->differential_angular_observables(q2);
-        return 3.0 / 4.0 * -o.vv3T();
+        return 3.0 / 4.0 * o.vv3T();
     }
 
     double
     BToVectorLeptonNeutrino::differential_J7(const double & q2) const
     {
         auto   o = _imp->differential_angular_observables(q2);
-        return 3.0 / 4.0 * -o.vv30T();
+        return 3.0 / 4.0 * o.vv30T();
     }
 
     double
@@ -521,7 +521,7 @@ namespace eos
     BToVectorLeptonNeutrino::differential_J9(const double & q2) const
     {
         auto   o = _imp->differential_angular_observables(q2);
-        return 3.0 / 4.0 * -o.vv5T();
+        return 3.0 / 4.0 * o.vv5T();
     }
 
     /* q^2-integrated observables */
@@ -684,7 +684,7 @@ namespace eos
     BToVectorLeptonNeutrino::integrated_J4(const double & q2_min, const double & q2_max) const
     {
         auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
-        return 3.0 / 4.0 * -o.vv10T();
+        return 3.0 / 4.0 * o.vv10T();
     }
 
     double
@@ -698,21 +698,21 @@ namespace eos
     BToVectorLeptonNeutrino::integrated_J6c(const double & q2_min, const double & q2_max) const
     {
         auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
-        return 3.0 / 4.0 * -o.vv30();
+        return 3.0 / 4.0 * o.vv30();
     }
 
     double
     BToVectorLeptonNeutrino::integrated_J6s(const double & q2_min, const double & q2_max) const
     {
         auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
-        return 3.0 / 4.0 * -o.vv3T();
+        return 3.0 / 4.0 * o.vv3T();
     }
 
     double
     BToVectorLeptonNeutrino::integrated_J7(const double & q2_min, const double & q2_max) const
     {
         auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
-        return 3.0 / 4.0 * -o.vv30T();
+        return 3.0 / 4.0 * o.vv30T();
     }
 
     double
@@ -726,7 +726,7 @@ namespace eos
     BToVectorLeptonNeutrino::integrated_J9(const double & q2_min, const double & q2_max) const
     {
         auto   o = _imp->integrated_angular_observables(q2_min, q2_max);
-        return 3.0 / 4.0 * -o.vv5T();
+        return 3.0 / 4.0 * o.vv5T();
     }
 
     double
@@ -838,7 +838,7 @@ namespace eos
         _imp->cp_conjugate = true;
         auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
 
-        return -3.0 / 4.0 * (o.vv10T() + o_c.vv10T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+        return 3.0 / 4.0 * (o.vv10T() + o_c.vv10T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
     }
 
     double
@@ -862,7 +862,7 @@ namespace eos
         _imp->cp_conjugate = true;
         auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
 
-        return -3.0 / 4.0 * (o.vv30() + o_c.vv30()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+        return 3.0 / 4.0 * (o.vv30() + o_c.vv30()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
     }
 
     double
@@ -874,7 +874,7 @@ namespace eos
         _imp->cp_conjugate = true;
         auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
 
-        return -3.0 / 4.0 * (o.vv3T() + o_c.vv3T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+        return 3.0 / 4.0 * (o.vv3T() + o_c.vv3T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
     }
 
     double
@@ -886,7 +886,7 @@ namespace eos
         _imp->cp_conjugate = true;
         auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
         
-        return -3.0 / 4.0 * (o.vv30T() + o_c.vv30T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+        return 3.0 / 4.0 * (o.vv30T() + o_c.vv30T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
     }
 
     double
@@ -910,7 +910,7 @@ namespace eos
         _imp->cp_conjugate = true;
         auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
 
-        return -3.0 / 4.0 * (o.vv5T() + o_c.vv5T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+        return 3.0 / 4.0 * (o.vv5T() + o_c.vv5T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
     }
 
     /*  CP-asymmetric normalized observables
@@ -986,7 +986,7 @@ namespace eos
         _imp->cp_conjugate = true;
         auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
 
-        return -3.0 / 4.0 * (o.vv10T() - o_c.vv10T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+        return 3.0 / 4.0 * (o.vv10T() - o_c.vv10T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
     }
 
     double
@@ -1010,7 +1010,7 @@ namespace eos
         _imp->cp_conjugate = true;
         auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
 
-        return -3.0 / 4.0 * (o.vv30() - o_c.vv30()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+        return 3.0 / 4.0 * (o.vv30() - o_c.vv30()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
     }
 
     double
@@ -1022,7 +1022,7 @@ namespace eos
         _imp->cp_conjugate = true;
         auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
 
-        return -3.0 / 4.0 * (o.vv3T() - o_c.vv3T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+        return 3.0 / 4.0 * (o.vv3T() - o_c.vv3T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
     }
 
     double
@@ -1034,7 +1034,7 @@ namespace eos
         _imp->cp_conjugate = true;
         auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
         
-        return -3.0 / 4.0 * (o.vv30T() - o_c.vv30T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+        return 3.0 / 4.0 * (o.vv30T() - o_c.vv30T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
     }
 
     double
@@ -1058,7 +1058,7 @@ namespace eos
         _imp->cp_conjugate = true;
         auto   o_c = _imp->integrated_angular_observables(q2_min, q2_max);
 
-        return -3.0 / 4.0 * (o.vv5T() - o_c.vv5T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
+        return 3.0 / 4.0 * (o.vv5T() - o_c.vv5T()) / (o.normalized_decay_width() + o_c.normalized_decay_width());
     }
 
     //* cf. [DSD2014], eq. (6), p. 5 - normalized(|Vcb|=1)
